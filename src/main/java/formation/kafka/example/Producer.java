@@ -9,7 +9,6 @@ import java.util.Properties;
 
 public class Producer {
     public static void main(String[] args) {
-
         Properties producerProps = new Properties();
         producerProps.put(ProducerConfig.CLIENT_ID_CONFIG, "producer_01");
         producerProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
@@ -21,6 +20,9 @@ public class Producer {
         Customer c = new Customer();
         c.setId("1");
         c.setName("Ichigo");
+        c.setAccountId("987654E567UHJK");
+        c.setClientId("MAXXXCLIENT01");
+        c.setAmount(17000.00);
 
         Integer key = 0;
         producer.send(new ProducerRecord<Integer, Customer>("formation.kafka.customers", key, c));

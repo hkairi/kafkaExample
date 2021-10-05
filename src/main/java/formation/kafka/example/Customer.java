@@ -8,6 +8,43 @@ public class Customer {
     @JsonProperty
     private String name;
 
+    @JsonProperty
+    private String accountId;
+
+    @JsonProperty
+    private String clientId;
+
+    public boolean amountExceeds(double limit) {
+        return this.amount > limit;
+    }
+
+    public String getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
+    }
+
+    public String getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    @JsonProperty
+    private double amount;
+
     public String getId() {
         return id;
     }
@@ -17,6 +54,9 @@ public class Customer {
         return "Customer{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
+                ", accountId='" + accountId + '\'' +
+                ", clientId='" + clientId + '\'' +
+                ", amount=" + amount +
                 '}';
     }
 
