@@ -14,6 +14,12 @@ public class Producer {
         producerProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         producerProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, IntegerSerializer.class);
         producerProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+        // producer acks
+        producerProps.put(ProducerConfig.ACKS_CONFIG, "all"); // strongest producing guarantee
+        producerProps.put(ProducerConfig.RETRIES_CONFIG, "3");
+        producerProps.put(ProducerConfig.LINGER_MS_CONFIG, "1");
+        // leverage idempotent producer from Kafka 0.11 !
+        producerProps.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, "true"); // ensure we don't push duplicates
 
         KafkaProducer<Integer, Customer> producer = new KafkaProducer<>(producerProps);
 
