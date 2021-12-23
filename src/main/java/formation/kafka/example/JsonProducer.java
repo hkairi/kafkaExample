@@ -1,5 +1,6 @@
 package formation.kafka.example;
 
+import formation.kafka.serdes.JsonSerializer;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -7,7 +8,7 @@ import org.apache.kafka.common.serialization.IntegerSerializer;
 
 import java.util.Properties;
 
-public class Producer {
+public class JsonProducer {
     public static void main(String[] args) {
         Properties producerProps = new Properties();
         producerProps.put(ProducerConfig.CLIENT_ID_CONFIG, "producer_01");
