@@ -10,6 +10,7 @@ import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.IntegerDeserializer;
+import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 
 import java.time.Duration;
@@ -21,20 +22,24 @@ public class JsonConsumer {
         Properties consumerProps = new Properties();
         consumerProps.put(ConsumerConfig.CLIENT_ID_CONFIG, "json_consumer_01");
         consumerProps.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
-        consumerProps.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, IntegerDeserializer.class);
+        consumerProps.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         consumerProps.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
         consumerProps.put(JsonDeserializer.VALUE_CLASS_NAME_CONFIG, Customer.class);
         consumerProps.put(ConsumerConfig.GROUP_ID_CONFIG, "appD");
         consumerProps.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 
-        KafkaConsumer<Integer, Customer> consumer = new KafkaConsumer<>(consumerProps);
+        KafkaConsumer<String, Customer> consumer = new KafkaConsumer<>(consumerProps);
         consumer.subscribe(Arrays.asList("formation.kafka.customers"));
 
         while (true) {
-            ConsumerRecords<Integer, Customer> records = consumer.poll(Duration.ofMillis(100));
-            for (ConsumerRecord<Integer, Customer> record : records) {
+            ConsumerRecords<String, Customer> records = consumer.poll(Duration.ofMillis(100));
+            for (ConsumerRecord<String, Customer> record : records) {
                 Customer customer = record.value();
-                System.out.println(record.value());
+                System.out.println(customer);
+
+                if (customer.exceedsLimit(2_000_000.00)) {
+                    // produce to another topic
+                }
             }
         }
     }

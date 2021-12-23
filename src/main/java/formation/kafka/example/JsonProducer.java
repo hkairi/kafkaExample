@@ -5,6 +5,7 @@ import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.IntegerSerializer;
+import org.apache.kafka.common.serialization.StringSerializer;
 
 import java.util.Properties;
 
@@ -13,7 +14,7 @@ public class JsonProducer {
         Properties producerProps = new Properties();
         producerProps.put(ProducerConfig.CLIENT_ID_CONFIG, "producer_01");
         producerProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
-        producerProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, IntegerSerializer.class);
+        producerProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         producerProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
         // producer acks
         producerProps.put(ProducerConfig.ACKS_CONFIG, "all"); // strongest producing guarantee
@@ -22,17 +23,11 @@ public class JsonProducer {
         // leverage idempotent producer from Kafka 0.11 !
         producerProps.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, "true"); // ensure we don't push duplicates
 
-        KafkaProducer<Integer, Customer> producer = new KafkaProducer<>(producerProps);
+        KafkaProducer<String, Customer> producer = new KafkaProducer<>(producerProps);
 
-        Customer c = new Customer();
-        c.setId("1");
-        c.setName("Ichigo");
-        c.setAccountId("987654E567UHJK");
-        c.setClientId("MAXXXCLIENT01");
-        c.setAmount(17000.00);
+        Customer c = new Customer("1", "ichigo", "AAXXOIJ", "SN00XXI", 250000.00);
 
-        Integer key = 0;
-        producer.send(new ProducerRecord<Integer, Customer>("formation.kafka.customers", key, c));
+        producer.send(new ProducerRecord<String, Customer>("formation.kafka.customers", c.getClientId(), c));
         producer.close();
     }
 }

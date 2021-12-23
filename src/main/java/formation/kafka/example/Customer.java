@@ -7,48 +7,67 @@ public class Customer {
     private String id;
     @JsonProperty
     private String name;
-
     @JsonProperty
     private String accountId;
-
     @JsonProperty
     private String clientId;
+    @JsonProperty
+    private double amount;
 
-    public boolean amountExceeds(double limit) {
-        return this.amount > limit;
+    public Customer() {
+    }
+
+    public Customer(String id, String name, String accountId, String clientId, double amount) {
+        this.id = id;
+        this.name = name;
+        this.accountId = accountId;
+        this.clientId = clientId;
+        this.amount = amount;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public String getAccountId() {
         return accountId;
     }
 
-    public void setAccountId(String accountId) {
-        this.accountId = accountId;
-    }
-
     public String getClientId() {
         return clientId;
-    }
-
-    public void setClientId(String clientId) {
-        this.clientId = clientId;
     }
 
     public double getAmount() {
         return amount;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
+
     public void setAmount(double amount) {
         this.amount = amount;
     }
 
-    @JsonProperty
-    private double amount;
-
-    public String getId() {
-        return id;
+    public boolean exceedsLimit(Double amount) {
+        return this.amount > amount;
     }
-
     @Override
     public String toString() {
         return "Customer{" +
@@ -58,17 +77,5 @@ public class Customer {
                 ", clientId='" + clientId + '\'' +
                 ", amount=" + amount +
                 '}';
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 }
